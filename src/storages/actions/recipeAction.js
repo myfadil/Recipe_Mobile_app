@@ -1,8 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '@env';
 
-
-const url = `https://busy-sun-hat-deer.cyclic.app/recipe`;
 
 async function getToken() {
   try {
@@ -21,16 +20,10 @@ async function getToken() {
 }
 export const getAllRecipe = (search) => async dispatch => {
 
-  // const config = {
-  //   headers: {
-  //     Authorization: 'Bearer ' + AsyncStorage.getItem('token'),
-  //   },
-  // };
-
   try {
     const token = await getToken();
     dispatch({ type: 'GET_RECIPE_PENDING' });
-    const result = await axios.get(`https://busy-sun-hat-deer.cyclic.app/recipe`, {headers: {
+    const result = await axios.get(`${BASE_URL}/recipe`, {headers: {
       'Authorization': `Bearer ${token}`
        },
        params: {
@@ -53,7 +46,7 @@ export const getSearchRecipe = (search) => async dispatch => {
   try {
     const token = await getToken();
     dispatch({ type: 'GET_SEARCHRECIPE_PENDING' });
-    const result = await axios.get(`https://busy-sun-hat-deer.cyclic.app/recipe`, {headers: {
+    const result = await axios.get(`${BASE_URL}/recipe`, {headers: {
       'Authorization': `Bearer ${token}`
        },
        params: {
@@ -76,7 +69,7 @@ export const getRecipeByCategory = (search) => async dispatch => {
     const token = await getToken();
     dispatch({ type: 'GET_RECIPE_CAT_PENDING' });
     const result = await axios.get(
-      'https://busy-sun-hat-deer.cyclic.app/recipe/' + '?searchBy=categories_id::text' + '&search=' + search,
+      `${BASE_URL}/recipe/` + '?searchBy=categories_id::text' + '&search=' + search,
       {headers: {
         'Authorization': `Bearer ${token}`
          }});
@@ -92,7 +85,7 @@ export const getMyRecipe = token => async dispatch => {
   const token = await getToken();
   try {
     dispatch({ type: 'GET_MY_RECIPE_PENDING' });
-    const result = await axios.get('https://busy-sun-hat-deer.cyclic.app/recipe/' + 'my-recipe', {headers: {
+    const result = await axios.get(`${BASE_URL}/recipe/` + 'my-recipe', {headers: {
       'Authorization': `Bearer ${token}`
        }});
     let res = result.data.data;
@@ -108,10 +101,9 @@ export const getDetailRecipe = (token, id) => async dispatch => {
   try {
     const token = await getToken();
     dispatch({ type: 'GET_DETAIL_RECIPE_PENDING' });
-    const result = await axios.get('https://busy-sun-hat-deer.cyclic.app/recipe/' + id, {headers: {
+    const result = await axios.get(`${BASE_URL}/recipe/` + id, {headers: {
       'Authorization': `Bearer ${token}`
        }});
-    console.log('url: ', url + id);
     let res = result.data.data;
     dispatch({ type: 'GET_DETAIL_RECIPE_SUCCESS', payload: res });
   } catch (error) {
@@ -122,7 +114,7 @@ export const getDetailRecipe = (token, id) => async dispatch => {
 export const addRecipe = (token, formData) => async dispatch => {
   try {
     dispatch({ type: 'ADD_RECIPE_PENDING' });
-    const result = await axios.post('https://busy-sun-hat-deer.cyclic.app/recipe', formData, {headers: {
+    const result = await axios.post(`${BASE_URL}/recipe`, formData, {headers: {
       'Content-Type' : 'multipart/form-data',
       'Authorization': `Bearer ${token}`
        }});
@@ -140,7 +132,7 @@ export const editRecipe = (token, data, id) => async dispatch => {
   try {
     const token = await getToken();
     dispatch({ type: 'EDIT_RECIPE_PENDING' });
-    const result = await axios.put('https://busy-sun-hat-deer.cyclic.app/recipe/' + id, data, {headers: {
+    const result = await axios.put(`${BASE_URL}/recipe/` + id, data, {headers: {
       'Authorization': `Bearer ${token}`
        }});
     const payload = result.data;
@@ -157,7 +149,7 @@ export const deleteRecipe = (token, id) => async dispatch => {
   try {
     const token = await getToken();
     dispatch({ type: 'DELETE_RECIPE_PENDING' });
-    const result = await axios.delete('https://busy-sun-hat-deer.cyclic.app/recipe/' + `${id}`, {headers: {
+    const result = await axios.delete(`${BASE_URL}/recipe/` + `${id}`, {headers: {
       'Authorization': `Bearer ${token}`
        }});
     const recipe = result.data;
@@ -197,7 +189,6 @@ export const deleteRecipe = (token, id) => async dispatch => {
 //   }
 // };
 
-const url_cat = `https://busy-sun-hat-deer.cyclic.app/category/`;
 export const getCategories = (token) => async dispatch => {
   const config = {
     headers: {
@@ -206,7 +197,7 @@ export const getCategories = (token) => async dispatch => {
   };
   try {
     dispatch({ type: 'GET_CATEGORIES_PENDING' });
-    const result = await axios.get('https://busy-sun-hat-deer.cyclic.app/category', config);
+    const result = await axios.get(`${BASE_URL}/category`, config);
     let res = result.data.data;
     dispatch({ type: 'GET_CATEGORIES_SUCCESS', payload: res });
   } catch (error) {

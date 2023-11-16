@@ -1,12 +1,11 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '@env';
 
-const url = `https://busy-sun-hat-deer.cyclic.app/users/login`;
-console.log(url);
 export const loginUser = data => async dispatch => {
   try {
     dispatch({ type: 'USER_LOGIN_PENDING' });
-    const result = await axios.post(`https://busy-sun-hat-deer.cyclic.app/users/login`, data);
+    const result = await axios.post(`${BASE_URL}/users/login`, data);
     // const user = result.data.data;
     dispatch({ type: 'USER_LOGIN_SUCCESS', payload: result.data });
     const token = result.data.token

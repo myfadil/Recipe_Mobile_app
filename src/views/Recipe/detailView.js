@@ -10,12 +10,14 @@ import {
   Dimensions,
   ImageBackground,
   ActivityIndicator,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {MainStyle} from '../../AppStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {getDetailRecipe} from '../../storages/actions/recipeAction';
+import {BASE_URL} from '@env';
 
 export default function DetailView({route, navigation}) {
   const {itemId} = route.params;
@@ -38,7 +40,7 @@ export default function DetailView({route, navigation}) {
   const dispatch = useDispatch();
 
   const getLike = () => {
-    axios.get(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/like/${id}?UserID=${userID}&ResepID=${id}`, {
+    axios.get(`${BASE_URL}/LikeAndBookmark/like/${id}?UserID=${userID}&ResepID=${id}`, {
         headers: {
             Authorization : `Bearer ${token}`
         }
@@ -58,7 +60,7 @@ export default function DetailView({route, navigation}) {
 }
 
     const getBookmark = () => {
-      axios.get(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/bookmark/${id}?UserID=${userID}&ResepID=${id}`, {
+      axios.get(`${BASE_URL}/LikeAndBookmark/bookmark/${id}?UserID=${userID}&ResepID=${id}`, {
         headers: {
             Authorization : `Bearer ${token}`
         }
@@ -110,7 +112,7 @@ export default function DetailView({route, navigation}) {
   }
 
   const postLike = () => {
-    axios.post(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/like?UserID=${userID}`,inputData, {
+    axios.post(`${BASE_URL}/LikeAndBookmark/like?UserID=${userID}`,inputData, {
         headers: {
             Authorization : `Bearer ${token}`
         }
@@ -134,7 +136,7 @@ export default function DetailView({route, navigation}) {
 }
 
 const deleteLike = () => {
-    axios.delete(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/like?UserID=${userID}&ResepID=${id}`, {
+    axios.delete(`${BASE_URL}/LikeAndBookmark/like?UserID=${userID}&ResepID=${id}`, {
         headers: {
             Authorization : `Bearer ${token}`
         }
@@ -159,7 +161,7 @@ const deleteLike = () => {
 }
 
 const postBookmark = () => {
-    axios.post(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/bookmark?UserID=${userID}`,inputData, {
+    axios.post(`${BASE_URL}/LikeAndBookmark/bookmark?UserID=${userID}`,inputData, {
         headers: {
             Authorization : `Bearer ${token}`
         }
@@ -183,7 +185,7 @@ const postBookmark = () => {
 }
 
 const deleteBookmark = () => {
-    axios.delete(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/bookmark?UserID=${userID}&ResepID=${id}`, {
+    axios.delete(`${BASE_URL}/LikeAndBookmark/bookmark?UserID=${userID}&ResepID=${id}`, {
         headers: {
             Authorization : `Bearer ${token}`
         }
@@ -264,7 +266,18 @@ const deleteBookmark = () => {
             alignSelf: 'flex-start',
           }}>
           <Text style={{marginTop: 10, color: 'black', fontSize: 26}}>Ingredients: </Text>
-          <Text style={{marginTop: 10, color: 'black', fontSize: 16}}>{recipe.ingredients}</Text>
+          <FlatList
+            data={recipe.ingredients.split(',')}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, color: 'black', marginTop: 10, marginRight: 5 }}>
+              {'\u2022'}
+              </Text>
+              <Text style={{ fontSize: 16, color: 'black', marginTop: 10 }}>{item}</Text>
+            </View>
+             )}
+            />
         </View>
       </View>
     </View>

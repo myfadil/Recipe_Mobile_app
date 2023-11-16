@@ -1,7 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '@env';
 
-const url = `https://busy-sun-hat-deer.cyclic.app/users/`;
+const url = `${BASE_URL}/users/`;
 
 async function getToken() {
   try {
@@ -30,7 +31,7 @@ export const editProfile = (token, data, id) => async dispatch => {
     //   },
     // };
     dispatch({type: 'EDIT_PROFILE_PENDING'});
-    const result = await axios.put('https://busy-sun-hat-deer.cyclic.app/users/' + id, data, {headers: {
+    const result = await axios.put(`${BASE_URL}/users/` + id, data, {headers: {
       'Authorization': `Bearer ${token}`
        }});
        const payload = result.data;

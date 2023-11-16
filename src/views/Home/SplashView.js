@@ -1,12 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
-import React from 'react';
-import {Image, View, StyleSheet, Dimensions} from 'react-native';
-import {MainStyle} from '../../AppStyles';
-export default function SplashView({navigation}) {
-  setTimeout(() => {
-    navigation.navigate('Login');
-  }, 2000);
+import React, { useEffect } from 'react';
+import { Image, View, StyleSheet, Dimensions } from 'react-native';
+import { useNavigation, StackActions } from '@react-navigation/native'; // Import hook navigasi
+import { MainStyle } from '../../AppStyles';
+
+export default function SplashView() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      navigation.dispatch(StackActions.replace('Login'));
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [navigation]);
   return (
     <View style={MainStyle.container}>
       <View style={styles.main}>

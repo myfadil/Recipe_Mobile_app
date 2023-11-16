@@ -15,6 +15,7 @@ import {
 import {MainStyle} from '../../AppStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
+import {BASE_URL} from '@env';
 
 export default function MyBookmarkRecipe({navigation}) {
   const token = useSelector(state => state.auth.data.data.token);
@@ -27,7 +28,7 @@ export default function MyBookmarkRecipe({navigation}) {
 //   const dispatch = useDispatch();
 
 const getBookmark = () => {
-    axios.get(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/bookmark?UserID=${id}`, {
+    axios.get(`${BASE_URL}/LikeAndBookmark/bookmark?UserID=${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

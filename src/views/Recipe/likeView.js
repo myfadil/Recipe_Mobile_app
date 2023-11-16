@@ -15,6 +15,7 @@ import {
 import {MainStyle} from '../../AppStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
+import {BASE_URL} from '@env';
 
 export default function MyLikeRecipe({navigation}) {
   const token = useSelector(state => state.auth.data.data.token);
@@ -27,7 +28,7 @@ export default function MyLikeRecipe({navigation}) {
 //   const dispatch = useDispatch();
 
 const getLike = () => {
-    axios.get(`https://busy-sun-hat-deer.cyclic.app/LikeAndBookmark/like?UserID=${id}`, {
+    axios.get(`${BASE_URL}/LikeAndBookmark/like?UserID=${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
