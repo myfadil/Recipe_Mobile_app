@@ -184,7 +184,7 @@ export default function AddView() {
       mediaType: type,
       quality: 1,
     };
-    launchImageLibrary(options, response => {
+    launchImageLibrary(options, async response => {
       if (response.didCancel) {
         alert('Upload photo canceled');
         return;
@@ -200,10 +200,19 @@ export default function AddView() {
       }
       let assets = response.assets[0];
 
+      const resizedImage = await ImageResizer.createResizedImage(
+      assets.uri,
+      800,
+      600,
+      'JPEG',
+      80,
+      0,
+    );
+
       console.log('fileName = ', assets.fileName);
       console.log('type = ', assets.type);
       console.log('uri = ', assets.uri);
-      setFilePath(assets.uri);
+      setFilePath(resizedImage.uri);
       setFileName(assets.fileName);
       setFileType(assets.type);
     });

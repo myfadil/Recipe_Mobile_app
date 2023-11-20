@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useIsFocused} from '@react-navigation/native';
 import {MainStyle} from '../../AppStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -41,12 +42,16 @@ export default function EditView({route, navigation }) {
   const [posted, setPosted] = useState(false);
   const [ingredients, setIngredients] = useState('');
   const [categories_id, setCategories_id] = useState('');
+  const isFocused = useIsFocused();
+
 
   useEffect(() => {
     dispatch(getDetailRecipe(token, id));
     dispatch(getCategories());
-    setPosted(false);
-  }, [dispatch, id, token]);
+    if(isFocused){
+      setPosted(false);
+    }
+  }, [dispatch, id, token, isFocused]);
 
   useEffect(() => {
     if (detail.data) {
@@ -55,7 +60,10 @@ export default function EditView({route, navigation }) {
       setFilePath(detail.data.photo);
       setCategories_id(detail.data.category_id);
     }
-  }, [detail]);
+    if(isFocused){
+      setPosted(false);
+    }
+  }, [detail, isFocused]);
   const postForm = async (e) => {
     if (title.trim() === '') {
       Alert.alert('Error', 'Please enter Recipe title');
@@ -175,7 +183,7 @@ export default function EditView({route, navigation }) {
       mediaType: type,
       quality: 1,
     };
-    launchImageLibrary(options, response => {
+    launchImageLibrary(options, async response => {
       if (response.didCancel) {
         alert('Upload photo canceled');
         return;
@@ -191,12 +199,21 @@ export default function EditView({route, navigation }) {
       }
       let assets = response.assets[0];
 
-      console.log('fileName = ', assets.fileName);
-      console.log('type = ', assets.type);
-      console.log('uri = ', assets.uri);
-      setFilePath(assets.uri);
-      setFileName(assets.fileName);
-      setFileType(assets.type);
+      const resizedImage = await ImageResizer.createResizedImage(
+        assets.uri,
+        800,
+        600,
+        'JPEG',
+        80,
+        0,
+      );
+  
+        console.log('fileName = ', assets.fileName);
+        console.log('type = ', assets.type);
+        console.log('uri = ', assets.uri);
+        setFilePath(resizedImage.uri);
+        setFileName(assets.fileName);
+        setFileType(assets.type);
     });
   };
   if (detail == null) {
