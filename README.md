@@ -83,6 +83,6 @@ Contributions are what make the open-source community such an amazing place to l
 
 - Email : [`myfadil45@gmail.com`](mailto:myfadil45@gmail.com)
 
-- LinkedIn : [`/inmyfadillah/`](https://www.linkedin.com/in/myfadillah/)
+- LinkedIn : [`/in/myfadillah/`](https://www.linkedin.com/in/myfadillah/)
 
 - GitHub : [`Mohamad Yasin Fadillah`](https://github.com/myfadil)
